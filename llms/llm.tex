@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Training Phase}
+
+\textbf{Objective Function}: The model minimizes a loss function, often the \textbf{cross-entropy loss}:
+
+\[
+L(\theta) = -\sum_{i=1}^{N} y_i \log(p_{\theta}(y_i|x_i))
+\]
+
+Where:
+\begin{itemize}
+    \item \( \theta \) represents the model parameters.
+    \item \( x_i \) is the input sequence.
+    \item \( y_i \) is the target (true next token).
+    \item \( p_{\theta}(y_i|x_i) \) is the probability the model assigns to \( y_i \) given \( x_i \).
+\end{itemize}
+
+\textbf{Gradient Descent}: Parameters are updated using gradient descent:
+
+\[
+\theta_{t+1} = \theta_t - \alpha \nabla L(\theta_t)
+\]
+
+\begin{itemize}
+    \item \( \alpha \) is the learning rate.
+    \item \( \nabla L(\theta_t) \) is the gradient of the loss with respect to the parameters.
+\end{itemize}
+
+\textbf{Backpropagation}: The computation of gradients involves backpropagation through the neural network, updating parameters layer by layer.
+
+\section*{Inference Phase}
+
+\textbf{Prediction}: For a given input sequence \( x \), the model predicts the next token:
+
+\[
+\hat{y} = \text{argmax}_y p_{\theta}(y|x)
+\]
+
+Where \( \hat{y} \) is the predicted next token.
+\\
+\textbf{Sequence Generation}: For generating longer sequences, this process is repeated:
+
+\[
+y_1, y_2, ..., y_T = \text{argmax}_{y_1, ..., y_T} \prod_{t=1}^{T} p_{\theta}(y_t|x, y_1, ..., y_{t-1})
+\]
+
+Here, each token's prediction depends on the previous tokens and the input.
+
+\section*{Few-Shot and Zero-Shot Learning}
+
+\textbf{Few-Shot}: The model leverages conditional probability for task-specific examples:
+
+\[
+P(Y|X, E) = \prod_{i} P(y_i|x, e_1, ..., e_n, y_1, ..., y_{i-1})
+\]
+
+Where \( E = \{e_1, ..., e_n\} \) are example pairs.
+
+\textbf{Zero-Shot}: The model infers from its training distribution without specific examples:
+
+\[
+P(Y|X) \approx \sum_{E \in \text{training set}} P(Y|X, E)
+\]
+
+\section*{Fine-Tuning}
+
+\textbf{Parameter Adjustment}: Fine-tuning involves adjusting parameters with a new loss function tailored to specific tasks:
+
+\[
+L_{\text{fine-tune}}(\theta) = - \sum_{i=1}^{M} \tilde{y}_i \log(p_{\theta}(\tilde{y}_i|\tilde{x}_i))
+\]
+
+Where:
+\begin{itemize}
+    \item \( \tilde{x}_i, \tilde{y}_i \) are from a task-specific dataset.
+    \item \( M \) is the number of examples in the fine-tuning set.
+\end{itemize}
+
+This mathematical framework helps understand how LLMs are initially trained, how they generate responses, and how they can be adapted or fine-tuned for specific applications without real-time learning during user interactions.
+
+\end{document}
